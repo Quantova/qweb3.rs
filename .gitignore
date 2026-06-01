@@ -1,0 +1,18 @@
+# Rust build output
+/target/
+**/*.rs.bk
+Cargo.lock      # libraries do not commit Cargo.lock
+
+# Secrets / keys (the SDK holds none; defensive)
+.env
+.env.*
+*.key
+*.pem
+*.seed
+*.mnemonic
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
