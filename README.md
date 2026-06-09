@@ -54,7 +54,7 @@ fn main() {
     let pk: Vec<u8> = (0u8..32).collect();
 
     let account_id = account_id_from_public_key(&pk); // 20-byte H160, leading 0x40
-    let address = address_from_public_key(&pk);        // Base64, begins with 'Q'
+    let address = address_from_public_key(&pk);        // Bech32m, begins with 'Q1'
 
     println!("account id : 0x{}", hex::encode(account_id));
     println!("Q-address  : {address}");
@@ -65,7 +65,7 @@ Output:
 
 ```
 account id : 0x400a48733bd5c2756ba95c5828cc83ee16fabcd3
-Q-address  : QApIczvVwnVrqVxYKMyD7hb6vNM=
+Q-address  : Q1GQ9YSUEM6HP826AFT3VZ3NYRACT040XNKRUCWF
 ```
 
 ### QVM Solidity ABI selectors and event topics (keccak-256)
@@ -148,7 +148,7 @@ fn main() -> qweb3::Result<()> {
 Output (the signature bytes vary per keypair; the length is the scheme's size):
 
 ```
-address   : QNTjBkO4tmiytTcxDewT2APHWDY=
+address   : Q1G... (Bech32m, begins with Q1; varies per keypair)
 signature : 0x60843581143c2cbd... (2420 bytes)
 verifies  : true
 ```
@@ -180,7 +180,7 @@ Expected output of `cargo run --example address`:
 ```
 public key : 0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f
 account id : 0x400a48733bd5c2756ba95c5828cc83ee16fabcd3
-Q-address  : QApIczvVwnVrqVxYKMyD7hb6vNM=
+Q-address  : Q1GQ9YSUEM6HP826AFT3VZ3NYRACT040XNKRUCWF
 ```
 
 Expected output of `cargo run --example abi_selectors`:
