@@ -47,16 +47,16 @@ all work; only the signing wallet requires it.
 ### Derive a canonical Q address (no node, no `pq` needed)
 
 ```rust
-use qweb3::address::{address_from_public_key, account_id_from_public_key};
+use qweb3::address::{address_from_public_key, public_key_to_q};
 
 fn main() {
     // a post-quantum public key (here a fixed example so output is reproducible)
     let pk: Vec<u8> = (0u8..32).collect();
 
-    let account_id = account_id_from_public_key(&pk); // 20-byte H160, leading 0x40
-    let address = address_from_public_key(&pk);        // Bech32m, begins with 'Q1'
+    let address    = address_from_public_key(&pk);  // Bech32m, begins with 'Q1'
+    let public_key = public_key_to_q(&pk);           // Bech32m "QPUB1..."
 
-    println!("account id : 0x{}", hex::encode(account_id));
+    println!("public key : {public_key}");
     println!("Q-address  : {address}");
 }
 ```
@@ -64,14 +64,13 @@ fn main() {
 Output:
 
 ```
-account id : 0x400a48733bd5c2756ba95c5828cc83ee16fabcd3
+public key : QPUB1QQQSYQCYQ5RQWZQFPG9SCRGWPUGPZYSNZS23V9CCRYDPK8QARC0S6JR5LF
 Q-address  : Q1GQ9YSUEM6HP826AFT3VZ3NYRACT040XNKRUCWF
 ```
 
 > **Address & key format.** Account/wallet identity is always Q-branded Bech32m:
 > `Q1...` addresses and `QPUB1...` public keys — letters and digits only, no
-> `+ / _ = -` symbols. The `account id` above is the raw 20-byte body shown in hex
-> for reference. The only `0x` hex you'll see is for **Solidity/QVM contract
+> `+ / _ = -` symbols. The only `0x` hex you'll see is for **Solidity/QVM contract
 > addresses**, **transaction signatures**, **calldata**, and **selectors/hashes** —
 > none of which are account addresses.
 
@@ -185,8 +184,7 @@ QUANTOVA_RPC=https://testnet.quantova.io cargo run --features pq --example trans
 Expected output of `cargo run --example address`:
 
 ```
-public key : 0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f
-account id : 0x400a48733bd5c2756ba95c5828cc83ee16fabcd3
+public key : QPUB1QQQSYQCYQ5RQWZQFPG9SCRGWPUGPZYSNZS23V9CCRYDPK8QARC0S6JR5LF
 Q-address  : Q1GQ9YSUEM6HP826AFT3VZ3NYRACT040XNKRUCWF
 ```
 
