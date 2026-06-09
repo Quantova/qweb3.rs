@@ -18,8 +18,7 @@ serde_json = "1.0"
 # hashing / encoding
 sha3 = "0.10"          # SHA3-256 (chain hash)
 tiny-keccak = { version = "2.0", features = ["keccak"] }  # keccak-256 (QVM Solidity ABI)
-base64 = "0.22"        # canonical Q-address encoding
-hex = "0.4"
+hex = "0.4"            # contract/0x addresses + node-form encoding
 
 # error handling
 thiserror = "1.0"
