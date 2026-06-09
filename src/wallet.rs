@@ -58,6 +58,9 @@ impl Scheme {
 pub struct Account {
     pub scheme: Scheme,
     pub public_key: Vec<u8>,
+    /// The public key as a Q-branded Bech32m string ("QPUB1...").
+    pub public_key_q: String,
+    /// The canonical Quantova account address ("Q1...").
     pub address: String,
 }
 
@@ -65,9 +68,11 @@ impl Account {
     /// Build an account from an existing public key (no secret key held).
     pub fn from_public_key(scheme: Scheme, public_key: Vec<u8>) -> Self {
         let address = address_from_public_key(&public_key);
+        let public_key_q = crate::address::public_key_to_q(&public_key);
         Self {
             scheme,
             public_key,
+            public_key_q,
             address,
         }
     }
