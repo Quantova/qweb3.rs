@@ -68,6 +68,13 @@ account id : 0x400a48733bd5c2756ba95c5828cc83ee16fabcd3
 Q-address  : Q1GQ9YSUEM6HP826AFT3VZ3NYRACT040XNKRUCWF
 ```
 
+> **Address & key format.** Account/wallet identity is always Q-branded Bech32m:
+> `Q1...` addresses and `QPUB1...` public keys — letters and digits only, no
+> `+ / _ = -` symbols. The `account id` above is the raw 20-byte body shown in hex
+> for reference. The only `0x` hex you'll see is for **Solidity/QVM contract
+> addresses**, **transaction signatures**, **calldata**, and **selectors/hashes** —
+> none of which are account addresses.
+
 ### QVM Solidity ABI selectors and event topics (keccak-256)
 
 ```rust
