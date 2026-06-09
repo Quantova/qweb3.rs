@@ -6,7 +6,7 @@
 //! Expected output:
 //!     public key : 0x000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f
 //!     account id : 0x400a48733bd5c2756ba95c5828cc83ee16fabcd3
-//!     Q-address  : QApIczvVwnVrqVxYKMyD7hb6vNM=
+//!     Q-address  : Q1GQ9YSUEM6HP826AFT3VZ3NYRACT040XNKRUCWF
 
 use qweb3::address::{account_id_from_public_key, address_from_public_key, is_valid_address};
 
