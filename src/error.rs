@@ -13,7 +13,7 @@ pub enum Error {
     #[error("node returned error {code}: {message}")]
     Node { code: i64, message: String },
 
-    /// A value could not be decoded (hex, base64, or an unexpected shape).
+    /// A value could not be decoded (hex, Bech32m, or an unexpected shape).
     #[error("decode error: {0}")]
     Decode(String),
 
