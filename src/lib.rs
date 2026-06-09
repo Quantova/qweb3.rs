@@ -62,6 +62,7 @@
 
 pub mod abi;
 pub mod address;
+pub mod bech32m;
 pub mod error;
 pub mod fees;
 pub mod qns;
@@ -116,8 +117,6 @@ impl QWeb3 {
         // last 20 bytes are the address body
         let body = &raw[raw.len() - 40..];
         let bytes = hex::decode(body).map_err(|e| Error::Decode(e.to_string()))?;
-        Ok(Some(
-            base64::Engine::encode(&base64::engine::general_purpose::STANDARD, bytes),
-        ))
+        Ok(Some(crate::address::body_to_address(&bytes)))
     }
 }
