@@ -5,7 +5,8 @@ edition = "2021"
 rust-version = "1.74"
 description = "Official Rust client for Quantova, the post-quantum Layer-1 blockchain (the Rust counterpart of qweb3.js and qweb3.py)."
 license = "BUSL-1.1"
-repository = "https://github.com/Quantova/qweb3-rs"
+repository = "https://github.com/Quantova/qweb3.rs"
+homepage = "https://quantova.org"
 keywords = ["quantova", "post-quantum", "blockchain", "web3", "sdk"]
 categories = ["cryptography::cryptocurrencies", "api-bindings"]
 
