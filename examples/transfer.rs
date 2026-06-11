@@ -21,10 +21,11 @@ fn main() -> qweb3::Result<()> {
         .unwrap_or_else(|_| "https://testnet.quantova.io".to_string());
     let q = QWeb3::new(&url);
 
-    // 1. a post-quantum sender account
-    let wallet = Wallet::create(Scheme::Dilithium)?;
+    // 1. a post-quantum sender account (create returns the wallet + its mnemonic)
+    let (wallet, mnemonic) = Wallet::create(Scheme::Dilithium)?;
     let sender = wallet.address();
     println!("sender (Dilithium): {sender}");
+    println!("mnemonic (back this up): {mnemonic}");
 
     let balance = q.rpc().get_balance(&sender)?;
     let nonce = q.rpc().get_transaction_count(&sender)?;

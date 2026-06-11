@@ -1,6 +1,6 @@
 [package]
 name = "qweb3"
-version = "1.0.0"
+version = "1.1.0"
 edition = "2021"
 rust-version = "1.74"
 description = "Official Rust client for Quantova, the post-quantum Layer-1 blockchain (the Rust counterpart of qweb3.js and qweb3.py)."
@@ -24,16 +24,31 @@ hex = "0.4"            # contract/0x addresses + node-form encoding
 # error handling
 thiserror = "1.0"
 
-# Post-quantum signatures (Dilithium / Falcon / SPHINCS+) via Open Quantum Safe.
-# Behind the `pq` feature because it links the native liboqs library.
-oqs = { version = "0.11", default-features = false, features = ["dilithium", "falcon", "sphincs"], optional = true }
+# Post-quantum signatures — the EXACT same cores as qweb3.js / @quantova/falcon-wasm
+# and the Quantova node (sp-core), so a mnemonic yields a byte-identical address and
+# valid signatures across all SDKs. Pure-Rust, no native liboqs, deterministic from
+# the seed. Falcon-512 → fn-dsa; Dilithium2/ML-DSA-44 → fips204; SPHINCS+ SHAKE-128s
+# → fips205. Keygen is seeded with ChaCha20 (Falcon) / the raw seed (Dilithium) /
+# blake2_256-derived components (SPHINCS+), matching the runtime exactly.
+fn-dsa = "0.3"
+fips204 = "0.4"
+fips205 = "0.4"
+rand_chacha = "0.3"
+rand_core = "0.6"
+blake2 = "0.10"
+zeroize = "1"
+
+# Mnemonic → 32-byte mini-secret (PBKDF2-HMAC-SHA512 over BIP-39 entropy, matches js).
+bip39 = "2.0"
+pbkdf2 = "0.12"
+hmac = "0.12"
+sha2 = "0.10"
 
 [features]
-# `pq` enables real post-quantum key generation and signing (links liboqs).
-# Without it, the address, ABI, QNS, RPC, and fee features all work; only the
-# wallet's keygen/sign require `pq`.
+# Post-quantum keygen + signing are ALWAYS available now (pure-Rust, no native libs).
+# `pq` is kept as a no-op alias so existing `--features pq` builds keep working.
 default = []
-pq = ["dep:oqs"]
+pq = []
 
 [[example]]
 name = "address"
@@ -54,4 +69,3 @@ path = "examples/qns_resolve.rs"
 [[example]]
 name = "transfer"
 path = "examples/transfer.rs"
-required-features = ["pq"]
