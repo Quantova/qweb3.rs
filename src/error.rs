@@ -10,6 +10,12 @@ pub enum Error {
     Rpc(String),
 
     /// The node returned an error object for a request.
+    ///
+    /// **Security note (QWEB3RS-RPC-007):** `message` is supplied by the remote
+    /// node and is therefore untrusted. The client sanitizes it (strips ASCII
+    /// control characters and ANSI escape sequences, caps the length) before
+    /// constructing this variant, but callers should still treat it as
+    /// adversarial data and avoid interpreting it as anything but display text.
     #[error("node returned error {code}: {message}")]
     Node { code: i64, message: String },
 
