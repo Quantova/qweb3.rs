@@ -1,4 +1,4 @@
-# Security Assessment -  qweb3 (Rust)
+# Security Assessment - qweb3 (Rust)
 
 - **Crate:** `qweb3`
 - **Assessment date:** 2026-06-23
@@ -26,7 +26,7 @@ external crates listed under *Trust boundary*, which require their own review.
 | KEY-001 | Secret material reachable through default serialization/printing | **Not applicable.** The secret-holding `Wallet` type derives no `Debug`, `Display`, or `Serialize`; only the public `Account` type derives `Debug`, and it carries no secret fields. The seed and secret key are zeroized on `Drop`. |
 | KEY-003 | CLI printed secrets / accepted the seed as argv | **Not applicable.** The crate is a library; it ships no secret-printing CLI. |
 | VAL-001 | REST path-segment injection from unvalidated input | **Not applicable.** Requests use JSON-RPC with parameters in the request body, not interpolated into URL paths. |
-| VAL-002 | Non-total `verify()` / scheme fall-through | **Low residual.** The signature scheme is a typed `enum` (no string fall-through to a default algorithm). Confirmation that `verify` returns `false` on every malformed input -  rather than returning an error to the caller -  will be re-checked at the point of the crates.io release. |
+| VAL-002 | Non-total `verify()` / scheme fall-through | **Low residual.** The signature scheme is a typed `enum` (no string fall-through to a default algorithm). Confirmation that `verify` returns `false` on every malformed input - rather than returning an error to the caller - will be re-checked at the point of the crates.io release. |
 
 ## Verified sound
 
@@ -46,9 +46,9 @@ external crates listed under *Trust boundary*, which require their own review.
 The crate delegates all signing, per-signature randomness, and verification math to external
 crates that are outside the scope of this assessment and require their own cryptographic review:
 
-- Falcon-512 -  `fn-dsa`
-- ML-DSA / Dilithium -  FIPS-204 (`fips204`)
-- SLH-DSA / SPHINCS+ -  FIPS-205 (`fips205`)
+- Falcon-512 - `fn-dsa`
+- ML-DSA / Dilithium - FIPS-204 (`fips204`)
+- SLH-DSA / SPHINCS+ - FIPS-205 (`fips205`)
 
 ## Recommendations for integrators
 
