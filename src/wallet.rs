@@ -17,7 +17,7 @@
 
 use crate::address::{address_from_public_key, public_key_to_q};
 use crate::error::{Error, Result};
-use zeroize::Zeroize;
+use zeroize::{Zeroize, Zeroizing};
 
 /// A Quantova post-quantum signature scheme. All derive into the same `Q` address space.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -242,13 +242,18 @@ impl Wallet {
             Scheme::Dilithium => {
                 use fips204::ml_dsa_44;
                 use fips204::traits::{SerDes, Signer};
-                let sk_arr: [u8; ml_dsa_44::SK_LEN] = self
-                    .secret_key
-                    .clone()
+                // QW3RS-CRYPTO-001: hold the transient secret-key copy in a
+                // Zeroizing<Vec<u8>> so it is scrubbed on drop, matching the
+                // wallet's Drop guarantee. `try_from_bytes` requires a fixed-size
+                // array; scrub that copy too before it leaves scope.
+                let sk_bytes: Zeroizing<Vec<u8>> = Zeroizing::new(self.secret_key.clone());
+                let mut sk_arr: [u8; ml_dsa_44::SK_LEN] = sk_bytes
+                    .as_slice()
                     .try_into()
                     .map_err(|_| Error::Signing("dilithium secret key size".into()))?;
                 let sk = ml_dsa_44::PrivateKey::try_from_bytes(sk_arr)
                     .map_err(|e| Error::Signing(format!("dilithium sk: {e}")))?;
+                sk_arr.zeroize();
                 let sig = sk
                     .try_sign_with_rng(&mut rng, message, &[])
                     .map_err(|e| Error::Signing(format!("dilithium sign: {e}")))?;
@@ -257,13 +262,18 @@ impl Wallet {
             Scheme::SphincsPlus => {
                 use fips205::slh_dsa_shake_128s;
                 use fips205::traits::{SerDes, Signer};
-                let sk_arr: [u8; slh_dsa_shake_128s::SK_LEN] = self
-                    .secret_key
-                    .clone()
+                // QW3RS-CRYPTO-001: hold the transient secret-key copy in a
+                // Zeroizing<Vec<u8>> so it is scrubbed on drop, matching the
+                // wallet's Drop guarantee. `try_from_bytes` requires a fixed-size
+                // array; scrub that copy too before it leaves scope.
+                let sk_bytes: Zeroizing<Vec<u8>> = Zeroizing::new(self.secret_key.clone());
+                let mut sk_arr: [u8; slh_dsa_shake_128s::SK_LEN] = sk_bytes
+                    .as_slice()
                     .try_into()
                     .map_err(|_| Error::Signing("sphincs+ secret key size".into()))?;
                 let sk = slh_dsa_shake_128s::PrivateKey::try_from_bytes(&sk_arr)
                     .map_err(|e| Error::Signing(format!("sphincs+ sk: {e}")))?;
+                sk_arr.zeroize();
                 let sig = sk
                     .try_sign_with_rng(&mut rng, message, &[], false)
                     .map_err(|e| Error::Signing(format!("sphincs+ sign: {e}")))?;
