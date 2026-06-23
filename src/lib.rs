@@ -1,10 +1,10 @@
-//! # qweb3 — the Rust client for Quantova
+//! # qweb3 - the Rust client for Quantova
 //!
 //! `qweb3` is the official Rust client for **Quantova**, the post-quantum Layer-1
-//! blockchain — the Rust counterpart of `qweb3.js` and `qweb3.py`. It connects to a
+//! blockchain - the Rust counterpart of `qweb3.js` and `qweb3.py`. It connects to a
 //! Quantova node over JSON-RPC, derives canonical `Q` addresses, computes the QVM
-//! Solidity ABI (keccak-256) and QNS namehash, estimates fees, and — with the `pq`
-//! feature — generates post-quantum keypairs and signs transactions.
+//! Solidity ABI (keccak-256) and QNS namehash, estimates fees, and - with the `pq`
+//! feature - generates post-quantum keypairs and signs transactions.
 //!
 //! Everything is post-quantum by construction: accounts and signatures use the NIST
 //! schemes Quantova supports (CRYSTALS-Dilithium, Falcon, SPHINCS+) and SHA3-256
@@ -44,7 +44,7 @@
 //! );
 //! ```
 //!
-//! Create a post-quantum account and sign (requires the `pq` feature):
+//! Create a post-quantum account and sign (always available, pure Rust):
 //!
 //! ```ignore
 //! use qweb3::wallet::{Wallet, Scheme};
@@ -54,11 +54,10 @@
 //! assert!(wallet.verify(b"...payload...", &signature)?);
 //! ```
 //!
-//! ## Feature flags
+//! ## Post-quantum
 //!
-//! - **`pq`** — enables real post-quantum key generation and signing via Open
-//!   Quantum Safe (liboqs). Without it, address derivation, ABI, QNS, RPC, and fees
-//!   all work; only the signing wallet requires it.
+//! Key generation and signing are ALWAYS available - pure Rust (fn-dsa / fips204 /
+//! fips205), no system libraries (no liboqs) and no feature flag required.
 
 pub mod abi;
 pub mod address;

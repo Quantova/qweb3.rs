@@ -60,4 +60,4 @@ extra features.
 - 🌐 https://quantova.org · 🔎 https://qvmscan.io · 💻 https://github.com/Quantova/qweb3.rs
 
 ## License
-Apache-2.0 © Quantova
+BUSL-1.1 - (c) 2026 Quantova Inc. See LICENSE.
